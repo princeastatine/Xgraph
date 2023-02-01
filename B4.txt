@@ -1,0 +1,56 @@
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.DatagramSocket;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.util.Scanner;
+public class UDPS
+{ public static void main (String[] args) throws SocketException,IOException
+{ DatagramSocket datagramsocket = new DatagramSocket(9000);
+byte[] receivedata= new byte[15];
+byte[] senddata= new byte [15];
+System.out.println("Server is running...");
+System.out.println("Server is waiting for a msg from client... ");
+while(true)
+{ BufferedReader user = new BufferedReader(newInputStreamReader(System.in));
+DatagramPacket receivepacket = new DatagramPacket(receivedata,receivedata.length);
+datagramsocket.receive(receivepacket);
+String data = new String(receivepacket.getData());
+System.out.println("client data : "+data);
+InetAddress ClientIpAddress = receivepacket.getAddress();
+int port = receivepacket.getPort();
+System.out.println("Enter the msg to send to client... ");
+String datatosend = user.readLine();
+send data = datatosend.getBytes();
+DatagramPacket tosendtoclient = new DatagramPacket(senddata,senddata.length,ClientIpAddress,port);
+datagramsocket.send(tosendtoclient);} } }
+UDPC.java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+public class UDPC
+{ public static void main(String args[]) throws UnknownHostException,IOException,SocketException
+{ byte[] sendData = new byte [15];
+byte[] receiveData = new byte [15];
+DatagramSocket mySocket = new DatagramSocket();
+System.out.println("Client is running...");
+System.out.println("Enter msg to send to server... ");
+BufferedReader informuser = new BufferedReader(new InputStreamReader(System.in));
+InetAddress myIP=InetAddress.getByName("localhost");
+String data=informuser.readLine();
+sendData=data.getBytes();
+DatagramPacket sendpacket=new DatagramPacket(sendData,sendData.length,myIP,9000);
+mySocket.send(sendpacket);
+DatagramPacket receivepacket=new DatagramPacket(receiveData,receiveData.length);
+mySocket.receive(receivepacket);
+String datatodisplay= new String(receivepacket.getData());
+System.out.println("msg from server : " + datatodisplay);
+mySocket.close();
+} }

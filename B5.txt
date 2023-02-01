@@ -1,0 +1,38 @@
+import java.io.*;
+import java.math.*;
+import java.util.*;
+import java.io.DataInputStream;
+public class RSA
+{static BigInteger phi,N,e,d,x,y;
+static BigInteger M;
+static BigInteger C;
+static BigInteger p,q,s;
+public static void main(String args[])throws Exception
+{Scanner in=new Scanner(System.in);
+System.out.println("Enter Two Relatively Prime Numbers : ");
+System.out.println("Enter p : ");
+p=in.nextBigInteger();
+System.out.println("Enter q : ");
+q=in.nextBigInteger();
+N=p.multiply(q);
+System.out.println("N = p * q = "+N);
+phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+System.out.println("Phi = (p - 1)*(q - 1) = "+phi);
+System.out.println("\n\nEnter e : ");
+e=in.nextBigInteger();
+d = e.modInverse(phi);
+System.out.println("d is "+d);
+System.out.println("\n\tPublic Key\t:"+e+" "+N);
+System.out.println("\n\tPrivate Key\t:"+d+" "+N);
+System.out.println("\n\nEnter the plain text\t: ");
+M=in.nextBigInteger();
+x=encrypt(M);
+System.out.println("Encrypted msg is "+ x);
+System.out.println("\n\nEnter the Cipher text\t: ");
+C=in.nextBigInteger();
+y=decrypt(C);
+System.out.println("Decrypted msg is "+ y);
+}public static BigInteger encrypt(BigInteger M)
+{return M.modPow(e, N);
+}public static BigInteger decrypt(BigInteger C)
+{return C.modPow(d, N); } }
